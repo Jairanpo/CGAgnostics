@@ -1,7 +1,9 @@
-from PySide2 import QtCore, QtWidgets, QtGui
 import os
 import sys
+import re
 
+import CGAgnostics.GUI as comp
+from Qt import QtWidgets, QtCore, QtGui
 
 # Color definitions:
 _WINDOW_STYLE = '''
@@ -320,3 +322,122 @@ class ToolkitQSplitter(QtWidgets.QSplitter):
                     border: 1px dashed rgb(150,150,150);
             }
         ''')
+
+
+# Standar library
+
+# Third party
+
+# Project
+
+
+class ToolkitQDirectory:
+    def __init__(self, parent="", is_file=False):
+        self.parent = parent
+        self._is_file = is_file
+        self._main_path = self.root_path()
+        self._icons_path = os.path.join(self._main_path, 'icons')
+        self._search_icon = QtGui.QIcon(
+            os.path.join(self._icons_path, "folder.ico"))
+        self._create_icon = QtGui.QIcon(
+            os.path.join(self._icons_path, "create.ico"))
+        self.V_root_LYT = None
+        self.V_savepath_LYT = None
+
+        ToolkitQDirectory._widgets(self)
+        ToolkitQDirectory._layouts(self)
+        ToolkitQDirectory._methods(self)
+
+    def _widgets(self):
+        b_size = 40, 30
+        self._instructions = comp.ToolkitQLabel('')
+
+        self.savepath_LBL = comp.ToolkitQLabel('<h3>Path:</h3>')
+        self.savepath_LNE = comp.ToolkitQLineEdit()
+        self.savepath_BTN = comp.ToolkitQPushButton('')
+        self.savepath_BTN.setIcon(self._search_icon)
+        self.savepath_BTN.setIconSize(
+            QtCore.QSize(b_size[0], b_size[1]))
+
+        self.create_BTN = comp.ToolkitQIconButton(self._create_icon)
+        self.create_BTN.setIconSize(QtCore.QSize(200, 120))
+        self.create_BTN.setMaximumWidth(270)
+        self.create_BTN.setMinimumWidth(200)
+        self.create_BTN.setMinimumHeight(55)
+        self.create_BTN.setMaximumHeight(55)
+
+    def _layouts(self):
+        _V_LYT = QtWidgets.QVBoxLayout()
+        _H_savepath_LYT = QtWidgets.QHBoxLayout()
+        _H_savepath_LYT.addWidget(self.savepath_LBL)
+        _H_savepath_LYT.addWidget(self.savepath_LNE)
+        _H_savepath_LYT.addWidget(self.savepath_BTN)
+        _V_LYT.addLayout(_H_savepath_LYT)
+
+        self.V_savepath_LYT = _V_LYT
+
+    def _methods(self):
+        def set_savepath():
+            file_path_FLD = QtWidgets.QFileDialog()
+            path = False
+
+            if self._is_file:
+                path = file_path_FLD.getOpenFileName(
+                    self.parent, "Select source file",
+                    filter="Videos (*.mp4 *.avi *.mov *.webmd)"
+                )
+                self.savepath_LNE.setText(path[0])
+
+            else:
+                path = file_path_FLD.getExistingDirectory(
+                    self.parent, "Select folder")
+                self.savepath_LNE.setText(path)
+
+        self.savepath_BTN.clicked.connect(set_savepath)
+
+    @property
+    def savepath(self):
+        return self.savepath_LNE.text().strip()
+
+    @property
+    def savepath_layout(self):
+        return self.V_savepath_LYT
+
+    @property
+    def layout(self):
+        return self.V_root_LYT
+
+    @layout.setter
+    def layout(self, value):
+        self.V_root_LYT = value
+
+    @property
+    def console(self):
+        return self._console
+
+    @console.setter
+    def console(self, ToolkitQConsole):
+        self._console = ToolkitQConsole
+
+    @property
+    def create_button(self):
+        return self.create_BTN
+
+    @property
+    def instructions(self):
+        return self._instructions
+
+    @instructions.setter
+    def instructions(self, text):
+        self._instructions.setText(text)
+
+    @staticmethod
+    def root_path():
+        pattern = re.compile('CGAgnostics.*')
+        if getattr(sys, 'frozen', False):
+            result = os.path.dirname(sys.executable)
+            result = re.sub(pattern, "", result)
+        else:
+            result = os.path.dirname(__file__)
+            result = re.sub(pattern, "", result)
+        return result
