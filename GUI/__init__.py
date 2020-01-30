@@ -69,6 +69,22 @@ _DARK_LBL_STYLE = '''
 # End color definitions.
 
 
+class ToolkitQWidget(QtWidgets.QWidget):
+    def __init__(self):
+        super().__init__()
+
+    @staticmethod
+    def root_path():
+        pattern = re.compile('CGAgnostics.*')
+        if getattr(sys, 'frozen', False):
+            result = os.path.dirname(sys.executable)
+            result = re.sub(pattern, "", result)
+        else:
+            result = os.path.dirname(__file__)
+            result = re.sub(pattern, "", result)
+        return result
+
+
 class ToolkitQDialog(QtWidgets.QDialog):
     def __init__(self, parent):
         super(ToolkitQDialog, self).__init__(parent)
@@ -307,6 +323,57 @@ class ToolkitQIconButton(QtWidgets.QPushButton):
         self.setStyleSheet(_BLUE_BTN_STYLE)
 
 
+class ToolkitQBrowseButton(QtWidgets.QPushButton, ToolkitQWidget):
+    def __init__(self, parent, lineedit='', is_file=False, size=[50, 50], filter="*"):
+        super().__init__()
+        self._is_file = is_file
+        self.path_LNE = lineedit
+        self.parent = parent
+        self.filter = filter
+        self.setIconSize(QtCore.QSize(size[0], size[1]))
+        self.setStyleSheet(_BLUE_BTN_STYLE)
+        self._icons_path = os.path.join(
+            self.root_path(), "CGAgnostics", "icons")
+        self._folder_icon = QtGui.QIcon(
+            os.path.join(self._icons_path, "folder.ico"))
+
+        self.setIcon(self._folder_icon)
+
+        self._methods()
+
+    def _methods(self):
+        def set_savepath():
+            file_path_FLD = QtWidgets.QFileDialog()
+            path = False
+
+            if self._is_file:
+                path = file_path_FLD.getOpenFileName(
+                    self.parent, "Select source file",
+                    filter=self.filter
+                )
+                self.path_LNE.setText(path[0])
+
+            else:
+                path = file_path_FLD.getExistingDirectory(
+                    self.parent, "Select folder")
+                self.path_LNE.setText(path)
+
+        self.clicked.connect(set_savepath)
+
+
+class ToolkitQCreateButton(QtWidgets.QPushButton, ToolkitQWidget):
+    def __init__(self, size=[120, 70]):
+        super().__init__()
+        self.setIconSize(QtCore.QSize(size[0], size[1]))
+        self.setStyleSheet(_BLUE_BTN_STYLE)
+        self._icons_path = os.path.join(
+            self.root_path(), "CGAgnostics", "icons")
+        self._create_icon = QtGui.QIcon(
+            os.path.join(self._icons_path, "export.ico"))
+
+        self.setIcon(self._create_icon)
+
+
 class ToolkitQLabel(QtWidgets.QLabel):
     def __init__(self, text):
         super().__init__(text)
@@ -324,14 +391,7 @@ class ToolkitQSplitter(QtWidgets.QSplitter):
         ''')
 
 
-# Standar library
-
-# Third party
-
-# Project
-
-
-class ToolkitQDirectory:
+class ToolkitQDirectory(ToolkitQWidget):
     def __init__(self, parent="", is_file=False):
         self.parent = parent
         self._is_file = is_file
@@ -430,14 +490,3 @@ class ToolkitQDirectory:
     @instructions.setter
     def instructions(self, text):
         self._instructions.setText(text)
-
-    @staticmethod
-    def root_path():
-        pattern = re.compile('CGAgnostics.*')
-        if getattr(sys, 'frozen', False):
-            result = os.path.dirname(sys.executable)
-            result = re.sub(pattern, "", result)
-        else:
-            result = os.path.dirname(__file__)
-            result = re.sub(pattern, "", result)
-        return result
