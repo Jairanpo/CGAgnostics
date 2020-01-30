@@ -490,3 +490,27 @@ class ToolkitQDirectory(ToolkitQWidget):
     @instructions.setter
     def instructions(self, text):
         self._instructions.setText(text)
+
+
+class ToolkitQCheckBox(QtWidgets.QCheckBox, ToolkitQWidget):
+    def __init__(self, label):
+        super().__init__(label)
+
+        stylesheet = '''
+            QCheckBox::indicator:unckeched { 
+                width: 8px;
+                height: 8px;
+                border-radius:7px;
+                border: 3px solid rgb(30,30,30);
+            }
+              QCheckBox::indicator:checked { 
+                width: 8px;
+                height: 8px;
+                border-radius:7px;
+                border: 3px solid rgb(30,30,30);
+                background: rgb(200,90,30);
+                image:url(!!!)
+            }
+        '''
+
+        self.setStyleSheet(stylesheet)
