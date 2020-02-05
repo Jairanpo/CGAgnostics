@@ -30,10 +30,24 @@ _DARK_TAB_STYLE = '''
 _BLUE_BTN_STYLE = '''
     QToolTip {color: white; border: 2px solid darkkhaki;
     padding: 5px; border - radius: 3 px; opacity: 200;}
-    QPushButton {background-color: rgb(60,70,100)}'''
+    QPushButton:enabled {background-color: rgb(60,70,100)}
+    QPushButton:disabled {background-color: rgb(40,40,45)}
+    
+    '''
+
 _DARK_LNE_STYLE = '''
-    background:rgb(20,20,20);
-    selection-background-color:rgb(250,100,30);'''
+    QLineEdit:enabled{
+        background:rgb(15,15,15);
+        border: none;
+        selection-background-color:rgb(250,100,30);
+    }
+    
+    QLineEdit:disabled{
+        background:rgb(40,40,45);
+        border: none;
+    }
+
+    '''
 _DARK_TBL_STYLE = '''
     QTableWidget {
     background-color: rgb(25,25,25);
@@ -62,7 +76,12 @@ _DARK_SBX_STYLE = '''
     '''
 
 _DARK_LBL_STYLE = '''
-    color: rgb(200,200,200);
+    QLabel:enabled{
+        color: rgb(200,200,200);
+    }
+    QLabel:disabled{
+        color:rgb(150,150,150);
+    }
 '''
 
 
@@ -502,14 +521,23 @@ class ToolkitQCheckBox(QtWidgets.QCheckBox, ToolkitQWidget):
                 height: 8px;
                 border-radius:7px;
                 border: 3px solid rgb(30,30,30);
+               
             }
-              QCheckBox::indicator:checked { 
+
+            QCheckBox:unchecked{
+                    color:rgb(150,150,150)
+            }
+
+            QCheckBox::indicator:checked { 
                 width: 8px;
                 height: 8px;
                 border-radius:7px;
                 border: 3px solid rgb(30,30,30);
                 background: rgb(200,90,30);
-                image:url(!!!)
+            }
+
+            QCheckBox:checked{
+                color:rgb(255,255,255)
             }
         '''
 
