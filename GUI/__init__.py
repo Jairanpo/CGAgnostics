@@ -3,7 +3,7 @@ import sys
 import re
 
 import CGAgnostics.GUI as comp
-from Qt import QtWidgets, QtCore, QtGui
+from PySide2 import QtWidgets, QtCore, QtGui
 
 # Color definitions:
 _WINDOW_STYLE = '''
@@ -84,9 +84,7 @@ _DARK_LBL_STYLE = '''
     }
 '''
 
-
 # End color definitions.
-
 
 class ToolkitQWidget(QtWidgets.QWidget):
     def __init__(self):
