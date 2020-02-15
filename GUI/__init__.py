@@ -266,7 +266,6 @@ class ToolkitQConsole():
         def _methods():
             def clear_console():
                 self.console_TED.setText('')
-                self.console_TED.setTextColor(self._colors["standar"])
 
             self.clear_BTN.clicked.connect(clear_console)
 
