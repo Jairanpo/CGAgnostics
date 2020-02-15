@@ -164,12 +164,25 @@ class ToolkitQTableWidget(QtWidgets.QTableWidget):
 
 class ToolkitQConsole():
     def __init__(self):
-        self._colors = {
-            "standar": QtGui.QColor(120, 120, 120),
-            "success": QtGui.QColor(50, 150, 100),
-            "warning": QtGui.QColor(170, 150, 40),
-            "error": QtGui.QColor(180, 60, 60)
-        }
+        self._style="""<style> 
+            .basic{
+                margin: 2px;
+            }
+            .success{
+                color: rgb(50, 150, 100)
+            }
+            .warning{
+                color: rgb(170, 150, 40)
+            }
+            .error{
+                color: rgb(180, 60, 60)
+            }
+            .standar{
+                color: rgb(130, 130, 130)
+            }
+        </style>
+        """
+
         self._V_root_LYT = None
         self._set_console()
 
@@ -185,23 +198,40 @@ class ToolkitQConsole():
         # -------------------------------------------------------------
         # Public methods:
 
+    def log_list(self, message_list, color="standar"):
+        _message = self._style
+        for message, type in message_list:
+            if type == "success":
+                _message += "<p class=\"success basic\"> - {0}</p>".format(message)
+            elif type == "warning":
+                _message += "<p class=\"warning basic\"> - {0}</p>".format(message)
+            elif type == "error":
+                _message += "<p class=\"error basic\"> - {0}</p>".format(message)
+            else:
+                _message += "<p class=\"standar basic\"> - {0}</p>".format(message)
+
+        self.console_TED.setText(_message)
+
+
+
     def log(self, message, color="standar"):
+        _message = self._style
         if color == "success":
             self.console_TED.setText('')
-            self.console_TED.setTextColor(self._colors["success"])
-            self.console_TED.setText('<Success> ' + message)
+            _message +="<p class=\"success basic\">Success: {0}</p>".format(message)
+            self.console_TED.setText(_message)
         elif color == "warning":
             self.console_TED.setText('')
-            self.console_TED.setTextColor(self._colors["warning"])
-            self.console_TED.setText('<Warning> ' + message)
+            _message +="<p class=\"warning basic\">Warning: {0}</p>".format(message)
+            self.console_TED.setText(_message)
         elif color == "error":
             self.console_TED.setText('')
-            self.console_TED.setTextColor(self._colors["error"])
-            self.console_TED.setText('<Error> ' + message)
+            _message +="<p class=\"error basic\">Error: {0}</p>".format(message)
+            self.console_TED.setText(_message)
         else:
             self.console_TED.setText('')
-            self.console_TED.setTextColor(self._colors["standar"])
-            self.console_TED.setText(message)
+            _message +="<p class=\"standar basic\">{0}</p>".format(message)
+            self.console_TED.setText(_message)
 
     # -------------------------------------------------------------
     # Private methods:
@@ -270,7 +300,7 @@ class ToolkitQCredits(QtWidgets.QLabel):
                      '<a style="color:rgb(95,95,95);"href="jairanpo@gmail.com">' +
                      'jairanpo@gmail.com</a>')
 
-        self.setStyleSheet("color:rgb(90,90,90); font: Italic")
+        self.setStyleSheet("color:rgb(90,90,90); font: Italic; margin:2px")
 
 
 class ToolkitQCloseButton(QtWidgets.QPushButton):
