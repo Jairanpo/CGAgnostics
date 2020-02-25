@@ -86,6 +86,7 @@ _DARK_LBL_STYLE = '''
 
 # End color definitions.
 
+
 class ToolkitQWidget(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
@@ -164,21 +165,24 @@ class ToolkitQTableWidget(QtWidgets.QTableWidget):
 
 class ToolkitQConsole():
     def __init__(self):
-        self._style="""<style> 
+        self._style = """<style> 
+            h1,h2,h3,h4,h5{
+                margin: 2px;
+            }
             .basic{
                 margin: 2px;
             }
             .success{
-                color: rgb(50, 150, 100)
+                color: rgb(70, 150, 100)
             }
             .warning{
-                color: rgb(170, 150, 40)
+                color: rgb(210, 160, 70)
             }
             .error{
-                color: rgb(180, 60, 60)
+                color: rgb(220, 80, 70)
             }
             .standar{
-                color: rgb(130, 130, 130)
+                color: rgb(160, 160, 160)
             }
         </style>
         """
@@ -202,35 +206,39 @@ class ToolkitQConsole():
         _message = self._style
         for message, type in message_list:
             if type == "success":
-                _message += "<p class=\"success basic\"> - {0}</p>".format(message)
+                _message += "<p class=\"success basic\">{0}</p>".format(
+                    message)
             elif type == "warning":
-                _message += "<p class=\"warning basic\"> - {0}</p>".format(message)
+                _message += "<p class=\"warning basic\">{0}</p>".format(
+                    message)
             elif type == "error":
-                _message += "<p class=\"error basic\"> - {0}</p>".format(message)
+                _message += "<p class=\"error basic\">{0}</p>".format(message)
             else:
-                _message += "<p class=\"standar basic\"> - {0}</p>".format(message)
+                _message += "<p class=\"standar basic\">{0}</p>".format(
+                    message)
 
         self.console_TED.setText(_message)
-
-
 
     def log(self, message, color="standar"):
         _message = self._style
         if color == "success":
             self.console_TED.setText('')
-            _message +="<p class=\"success basic\">Success: {0}</p>".format(message)
+            _message += "<p class=\"success basic\">Success: {0}</p>".format(
+                message)
             self.console_TED.setText(_message)
         elif color == "warning":
             self.console_TED.setText('')
-            _message +="<p class=\"warning basic\">Warning: {0}</p>".format(message)
+            _message += "<p class=\"warning basic\">Warning: {0}</p>".format(
+                message)
             self.console_TED.setText(_message)
         elif color == "error":
             self.console_TED.setText('')
-            _message +="<p class=\"error basic\">Error: {0}</p>".format(message)
+            _message += "<p class=\"error basic\">Error: {0}</p>".format(
+                message)
             self.console_TED.setText(_message)
         else:
             self.console_TED.setText('')
-            _message +="<p class=\"standar basic\">{0}</p>".format(message)
+            _message += "<p class=\"standar basic\">{0}</p>".format(message)
             self.console_TED.setText(_message)
 
     # -------------------------------------------------------------
@@ -294,7 +302,7 @@ class ToolkitQComboBox(QtWidgets.QComboBox):
 class ToolkitQCredits(QtWidgets.QLabel):
     def __init__(self):
         super(ToolkitQCredits, self).__init__()
-        self.setText("Created by Jair Anguiano," +
+        self.setText("Created by Jair Anguiano, " +
                      "for support mail me at " +
                      '<a style="color:rgb(95,95,95);"href="jairanpo@gmail.com">' +
                      'jairanpo@gmail.com</a>')
@@ -306,8 +314,13 @@ class ToolkitQCloseButton(QtWidgets.QPushButton):
     def __init__(self, text="close"):
         super(ToolkitQCloseButton, self).__init__()
         self.setText(text)
+        self.setStyleSheet('''
+            background-color:rgb(40,40,40); 
+            padding-top:8%;
+            padding-bottom:8%;
+        ''')
         self.setMinimumWidth(80)
-        self.setMaximumWidth(150)
+        self.setMaximumWidth(110)
 
 
 class ToolkitQFooter():
@@ -317,16 +330,20 @@ class ToolkitQFooter():
 
     @property
     def layout(self):
-        _V_LYT = QtWidgets.QVBoxLayout()
-        _WGT = QtWidgets.QWidget()
-        _WGT.setLayout(self._V_root_layout)
-        _V_LYT.addWidget(_WGT)
-        return _V_LYT
+        self._V_root_layout.setSpacing(0)
+        self._V_root_layout.setContentsMargins(0, 0, 0, 0)
+        return self._V_root_layout
 
     @property
     def widget(self):
         _WGT = QtWidgets.QWidget()
         _WGT.setLayout(self.layout)
+        self.layout.setContentsMargins(20,0,20,0)
+        _WGT.setMaximumHeight(50)
+        _WGT.setStyleSheet('''
+            background-color:rgb(30,30,30);
+        ''')
+
         return _WGT
 
     @classmethod
