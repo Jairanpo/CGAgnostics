@@ -223,17 +223,17 @@ class ToolkitQConsole():
         _message = self._style
         if color == "success":
             self.console_TED.setText('')
-            _message += "<p class=\"success basic\">Success: {0}</p>".format(
+            _message += "<p class=\"success basic\">{0}</p>".format(
                 message)
             self.console_TED.setText(_message)
         elif color == "warning":
             self.console_TED.setText('')
-            _message += "<p class=\"warning basic\">Warning: {0}</p>".format(
+            _message += "<p class=\"warning basic\">{0}</p>".format(
                 message)
             self.console_TED.setText(_message)
         elif color == "error":
             self.console_TED.setText('')
-            _message += "<p class=\"error basic\">Error: {0}</p>".format(
+            _message += "<p class=\"error basic\">{0}</p>".format(
                 message)
             self.console_TED.setText(_message)
         else:
@@ -338,7 +338,7 @@ class ToolkitQFooter():
     def widget(self):
         _WGT = QtWidgets.QWidget()
         _WGT.setLayout(self.layout)
-        self.layout.setContentsMargins(20,0,20,0)
+        self.layout.setContentsMargins(20, 10, 20, 10)
         _WGT.setMaximumHeight(50)
         _WGT.setStyleSheet('''
             background-color:rgb(30,30,30);
