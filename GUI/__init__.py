@@ -2,7 +2,6 @@ import os
 import sys
 import re
 
-import CGAgnostics.GUI as comp
 from PySide2 import QtWidgets, QtCore, QtGui
 
 # Color definitions:
@@ -380,7 +379,7 @@ class ToolkitQSpinBox(QtWidgets.QSpinBox):
 
 class ToolkitQIconButton(QtWidgets.QPushButton):
     def __init__(self, icon, label=''):
-        super().__init__(label)
+        super(ToolkitQIconButton, self).__init__(label)
         self.setIcon(icon)
         self.setIconSize(QtCore.QSize(50, 50))
         self.setStyleSheet(_BLUE_BTN_STYLE)
@@ -388,7 +387,7 @@ class ToolkitQIconButton(QtWidgets.QPushButton):
 
 class ToolkitQBrowseButton(QtWidgets.QPushButton, ToolkitQWidget):
     def __init__(self, parent, lineedit='', is_file=False, size=[50, 50], filter="*"):
-        super().__init__()
+        super(ToolkitQBrowseButton, self).__init__()
         self._is_file = is_file
         self.path_LNE = lineedit
         self.parent = parent
@@ -473,16 +472,16 @@ class ToolkitQDirectory(ToolkitQWidget):
 
     def _widgets(self):
         b_size = 40, 30
-        self._instructions = comp.ToolkitQLabel('')
+        self._instructions = ToolkitQLabel('')
 
-        self.savepath_LBL = comp.ToolkitQLabel('<h3>Path:</h3>')
-        self.savepath_LNE = comp.ToolkitQLineEdit()
-        self.savepath_BTN = comp.ToolkitQPushButton('')
+        self.savepath_LBL = ToolkitQLabel('<h3>Path:</h3>')
+        self.savepath_LNE = ToolkitQLineEdit()
+        self.savepath_BTN = ToolkitQPushButton('')
         self.savepath_BTN.setIcon(self._search_icon)
         self.savepath_BTN.setIconSize(
             QtCore.QSize(b_size[0], b_size[1]))
 
-        self.create_BTN = comp.ToolkitQIconButton(self._create_icon)
+        self.create_BTN = ToolkitQIconButton(self._create_icon)
         self.create_BTN.setIconSize(QtCore.QSize(200, 120))
         self.create_BTN.setMaximumWidth(270)
         self.create_BTN.setMinimumWidth(200)
